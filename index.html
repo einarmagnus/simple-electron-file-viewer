@@ -2,14 +2,56 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>File Viewer</title>
+    <style>
+      .container {
+        width:100%;
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 10px;
+      }
+      .fileviewer {
+        width: 100%;
+      }
+      .target {
+        display: contents;
+      }
+      ul {
+        list-style: none;
+      }
+      li.dir {
+        font-weight: bold;
+        cursor: pointer;
+      }
+      li.dir label {
+        cursor: pointer;
+      }
+
+    </style>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>
+    <template id="file-viewer">
+        <div class="fileviewer">
+            <ul class="filelist">
+                <li>
+                    <label><input type="checkbox"><span class="filename">en annan file</span></span>
+                </li>
+                <li>
+                    <label><input type="checkbox"><span class="filename">en annan file</span></span>
+                </li>
+            </ul>
+        </div>
+    </template>
+    <template id="file-list-item">
+      <li>
+        <label><input type="checkbox"><span class="filename"></span></label>
+      </li>
+    </template>
+    <div class="container">
+      <div id="left" class="target"></div>
+      <div id="right" class="target"></div>
+    </div>
+
   </body>
 
   <script>

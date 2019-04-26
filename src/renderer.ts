@@ -1,3 +1,8 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+
+import FileView from "./fileview";
+
+
+
+let left = new FileView(".", "#left", "#file-viewer", "#file-list-item");
+let right = new FileView(".", "#right", "#file-viewer", "#file-list-item");
+
