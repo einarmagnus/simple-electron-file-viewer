@@ -2,7 +2,6 @@ import DirEntry from "./direntry";
 import { readdirSync, statSync, stat, copyFileSync, mkdirSync, fstat } from "fs";
 import { join } from "path";
 import File from "./file";
-import { FileExistsError } from "./errors";
 
 export default class Directory extends DirEntry {
 
