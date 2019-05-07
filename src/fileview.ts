@@ -1,7 +1,7 @@
-import { readdirSync, lstat, lstatSync, statSync, MakeDirectoryOptions } from "fs";
+import { statSync } from "fs";
 import DirEntry from "./direntry";
 import Directory from "./directory";
-import { fileURLToPath } from "url";
+
 import { join } from "path";
 
 /**
@@ -9,7 +9,7 @@ import { join } from "path";
  *
  */
 export default class FileView {
-    private pwd: Directory;
+    private _pwd: Directory;
     private fileList: HTMLUListElement;
     private liTemplate: HTMLTemplateElement
 
@@ -20,23 +20,24 @@ export default class FileView {
      * @param viewTemplateSelector a selector to find the template to use for this viewer
      * @param liTemplateSelector a selector to find the template to use for a row in the file viewer
      */
-    constructor(startDir: string,
+    constructor(
+            public readonly title: string,
+            startDir: string,
             mountPointSelector: string,
             viewTemplateSelector: string,
             liTemplateSelector: string) {
-        console.log("constructing!", mountPointSelector);
         let stat = statSync(startDir);
         if (!stat.isDirectory()) {
             throw new Error(startDir + " is not a directory");
         }
-        this.pwd = new Directory(startDir);
+        this._pwd = new Directory(startDir);
         this.liTemplate = document.querySelector(liTemplateSelector) as HTMLTemplateElement;
         let template = document.querySelector(viewTemplateSelector) as HTMLTemplateElement;
 
         let clone = document.importNode(template.content, true);
         let target = document.querySelector(mountPointSelector);
         target.appendChild(clone);
-        console.log(target, clone);
+        target.querySelector(".title").textContent = this.title;
         this.fileList = target.querySelector(".filelist");
         this.fileList.addEventListener("click", evt => this.listClicked(evt));
         this.fileList.addEventListener("dblclick", evt => this.listDblClicked(evt));
@@ -47,7 +48,7 @@ export default class FileView {
     public list() {
         this.fileList.innerHTML = "";
         this.fileList.appendChild(this.listItem(".."))
-        this.pwd.list().forEach(entry => {
+        this._pwd.list().forEach(entry => {
             let element = this.listItem(entry.name);
             this.fileList.appendChild(element);
         })
@@ -78,7 +79,7 @@ export default class FileView {
      */
     public cd(file: string) {
         if (this.isDirectory(file)) {
-            this.pwd = new Directory(join(this.pwd.path, file));
+            this._pwd = new Directory(join(this._pwd.path, file));
             this.list();
         }
     }
@@ -88,7 +89,7 @@ export default class FileView {
      * @param name the name of a file withing the current directory
      */
     private isDirectory(name: string) {
-        return statSync(join(this.pwd.path, name)).isDirectory();
+        return statSync(join(this._pwd.path, name)).isDirectory();
     }
 
     /**
@@ -103,5 +104,23 @@ export default class FileView {
         }
         clone.querySelector(".filename").textContent = fileName;
         return clone;
+    }
+
+    public getSelected() : DirEntry[] {
+        const result : DirEntry[] = [];
+        this.fileList.querySelectorAll("li").forEach(li => {
+            const isChecked = li.querySelector("input").checked;
+            if (isChecked) {
+                const el = li.querySelector(".filename");
+                const fileName = el.textContent;
+                const entry = this._pwd.get(fileName);
+                result.push(entry);
+            }
+        });
+        return result;
+    }
+
+    public get pwd(): Directory {
+        return this._pwd;
     }
 }

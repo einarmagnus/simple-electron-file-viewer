@@ -4,20 +4,38 @@
     <meta charset="UTF-8">
     <title>File Viewer</title>
     <style>
+      * {
+      }
       .container {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        bottom: 50px;
         width:100%;
         display:grid;
         grid-template-columns: 1fr 1fr;
+        grid-template-rows: 20px 1fr;
         grid-gap: 10px;
+        vertical-align: top;
       }
       .fileviewer {
-        width: 100%;
+
+        overflow: scroll;
+      }
+      .fileviewer h1 {
+        font-size: 16pt;
+        padding-left: 10px;
       }
       .target {
         display: contents;
       }
       ul {
         list-style: none;
+        padding: 0 10px;;
+      }
+      li {
+        white-space: nowrap;
+
       }
       li.dir {
         font-weight: bold;
@@ -27,19 +45,19 @@
         cursor: pointer;
       }
 
+      .controls {
+        padding: 10px;
+      }
+
     </style>
   </head>
   <body>
     <template id="file-viewer">
         <div class="fileviewer">
-            <ul class="filelist">
-                <li>
-                    <label><input type="checkbox"><span class="filename">en annan file</span></span>
-                </li>
-                <li>
-                    <label><input type="checkbox"><span class="filename">en annan file</span></span>
-                </li>
-            </ul>
+          <h1 class="title"></h1>
+          <ul class="filelist">
+
+          </ul>
         </div>
     </template>
     <template id="file-list-item">
@@ -48,9 +66,16 @@
       </li>
     </template>
     <div class="container">
+      <div class="controls" data-controls-for="left">
+          <button data-command="copy">Copy ➡</button>
+      </div>
+      <div class="controls" data-controls-for="right">
+          <button data-command="copy">⬅ Copy</button>
+      </div>
       <div id="left" class="target"></div>
       <div id="right" class="target"></div>
     </div>
+
 
   </body>
 
