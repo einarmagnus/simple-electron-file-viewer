@@ -25,4 +25,10 @@ export default abstract class DirEntry {
         return this._path;
     }
 
+    toString(): string {
+        // this.constructor ger klassnamnet på objektet,
+        // så "Directory" om det är ett Directory-objekt och "File" om det är ett File-object
+        return `${this.constructor.name}[${this.path}]`
+    }
+
 }
