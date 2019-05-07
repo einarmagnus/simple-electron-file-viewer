@@ -40,8 +40,10 @@ export default class Directory extends DirEntry {
     }
 
     public copyTo(dest: Directory, overwrite: boolean = false): void {
+        const destDir = new Directory(join(dest.path, this.name));
+        mkdirSync(destDir.path);
         this.list().forEach(entry => {
-            entry.copyTo(dest, overwrite);
-        })
+            entry.copyTo(destDir, overwrite);
+        });
     }
 }
