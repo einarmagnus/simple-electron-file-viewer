@@ -4,6 +4,9 @@ import { join } from "path";
 import File from "./file";
 
 export default class Directory extends DirEntry {
+    mkDir(dirName: string) {
+        mkdirSync(join(this.path, dirName));
+    }
 
     constructor(path: string) {
         super(path);

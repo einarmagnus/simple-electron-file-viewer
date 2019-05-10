@@ -49,6 +49,30 @@
         padding: 10px;
       }
 
+      dialog {
+        padding: 0;
+      }
+      dialog h1 {
+        margin: 0;
+        padding: 5px 20px;
+        font-size: 16pt;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        background: #555;
+        color: white;
+      }
+      dialog .body {
+        padding: 20px;
+        padding-top: 10px;
+      }
+
+      dialog button {
+        margin: 5px;
+        margin-right:0;
+        margin-top: 15px;
+        width: 80px;
+        float:right;
+      }
+
     </style>
   </head>
   <body>
@@ -65,18 +89,28 @@
         <label><input type="checkbox"><span class="filename"></span></label>
       </li>
     </template>
+
     <div class="container">
       <div class="controls" data-controls-for="left">
           <button data-command="copy">Copy ➡</button>
+          <button data-command="makeDir">New dir</button>
       </div>
       <div class="controls" data-controls-for="right">
           <button data-command="copy">⬅ Copy</button>
-      </div>
+          <button data-command="makeDir">New dir</button>
+        </div>
       <div id="left" class="target"></div>
       <div id="right" class="target"></div>
     </div>
 
-
+    <dialog id="prompt">
+      <h1 id="prompt-title">Title</h1>
+      <div class="body">
+        <label for="promt-input" id="prompt-label"></label><input type="text" id="prompt-input"><br>
+        <button id="prompt-ok">ok</button>
+        <button id="prompt-cancel">cancel</button>
+      </div>
+    </dialog>
   </body>
 
   <script>
